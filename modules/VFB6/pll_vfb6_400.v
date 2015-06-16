@@ -29,10 +29,10 @@ module pll_vfb6_400 ( CLKIN,
 	wire clkout2;
 	
 	
-  // Input buffering
+  // input buffering
   //------------------------------------
-  IBUFG clkin1_buf
-   (.O (clkin1),
+  IBUFG clkin1_buf (
+    .O (clkin1),
     .I (CLKIN));
 
   wire        locked;
@@ -74,25 +74,23 @@ module pll_vfb6_400 ( CLKIN,
     .CLKIN                 (clkin1));
 
 
-  // Output buffering
+  // output buffering
   //-----------------------------------
-  BUFG clkf_buf
-   (.O (clkfbout_buf),
+  BUFG clkf_buf (
+    .O (clkfbout_buf),
     .I (clkfbout));
 
-  BUFG clkout1_buf
-   (.O   (CLK1),
+  BUFG clkout1_buf (
+    .O   (CLK1),
     .I   (clkout0));
 
 
-  BUFG clkout2_buf
-   (.O   (CLK2),
+  BUFG clkout2_buf (
+    .O   (CLK2),
     .I   (clkout1));
 
-  BUFG clkout3_buf
-   (.O   (CLK4),
+  BUFG clkout3_buf (
+    .O   (CLK4),
     .I   (clkout2));
-
-
 
 endmodule

@@ -517,4 +517,3 @@ begin
 	sda_o   <= '0';
 	sda_oen <= isda_oen;
 end architecture structural;
-
