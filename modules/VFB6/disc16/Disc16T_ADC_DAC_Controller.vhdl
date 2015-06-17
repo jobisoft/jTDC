@@ -1,33 +1,46 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date:    10:39:53 03/29/2013 
--- Design Name: 
--- Module Name:    Disc16T_ADC_DAC_Controller - Behavioral 
--- Project Name: 
--- Target Devices: 
--- Tool versions: 
--- Description: 
---
--- Dependencies: 
---
--- Revision: 
--- Revision 0.01 - File Created
--- Additional Comments: 
---
---State machine that controls ADC and DAC on Disc16T.
---things that are controlled are 2 DACs and one ADC.
---(hysteresis dac has to be implemented independently.)
---
---core of design is a state machine with following modes:
---1) All thresholds and all hysteresis-set-voltages are measured in a cycle (lowest priority)
---2) Write Value into DAC register = set DAC-Voltage (including offset dac)
---3) Write certain register in DAC (allows access to all registers)
---4) read back dac value (read back written setting)
---5) read certain register (allows access to all registers)
---6) digitize certain voltage (allows digitizing of voltages not coverd by mode 1. e.g. ref, offsetdac,...)
-----------------------------------------------------------------------------------
+-------------------------------------------------------------------------
+----                                                                 ----
+---- Engineer: Christian Honisch                                     ----
+---- Company : ELB-Elektroniklaboratorien Bonn UG                    ----
+----           (haftungsbeschränkt)                                  ----
+----                                                                 ----
+---- Description   : State machine that controls ADC and DAC on      ----
+----                 Disc16T. Things that are controlled are 2 DACs  ----
+----                 and one ADC (hysteresis dac has to be           ----
+----                 implemented independently).                     ----
+----                                                                 ----
+-------------------------------------------------------------------------
+----                                                                 ----
+---- Copyright (C) 2015 ELB                                          ----
+----                                                                 ----
+---- This program is free software; you can redistribute it and/or   ----
+---- modify it under the terms of the GNU General Public License as  ----
+---- published by the Free Software Foundation; either version 3 of  ----
+---- the License, or (at your option) any later version.             ----
+----                                                                 ----
+---- This program is distributed in the hope that it will be useful, ----
+---- but WITHOUT ANY WARRANTY; without even the implied warranty of  ----
+---- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the    ----
+---- GNU General Public License for more details.                    ----
+----                                                                 ----
+---- You should have received a copy of the GNU General Public       ----
+---- License along with this program; if not, see                    ----
+---- <http://www.gnu.org/licenses>.                                  ----
+----                                                                 ----
+-------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------------------------------------
+-- core of design is a state machine with following modes:
+-- 1) All thresholds and all hysteresis-set-voltages are measured in a cycle (lowest priority)
+-- 2) Write Value into DAC register = set DAC-Voltage (including offset dac)
+-- 3) Write certain register in DAC (allows access to all registers)
+-- 4) read back dac value (read back written setting)
+-- 5) read certain register (allows access to all registers)
+-- 6) digitize certain voltage (allows digitizing of voltages not coverd by mode 1. e.g. ref, offsetdac,...)
+-------------------------------------------------------------------------------------------------------------
+
+
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
