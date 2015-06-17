@@ -23,16 +23,16 @@
 ##--                                                                 --
 ##---------------------------------------------------------------------
 
-TIMEGRP "EventSizeToBig" = ffs(eventsize_too_big);			
+TIMEGRP "EventSizeToBig" = ffs(*/eventsize_too_big);			
 TIMESPEC TS_EventSizeToBig = TO "EventSizeToBig" 10 ns;
 
-TIMEGRP "MoreSlicesToCome" = ffs(tdc_slicecounts_current*:tdc_slicecounts_stop*);			
+TIMEGRP "MoreSlicesToCome" = ffs(*/tdc_slicecounts_current*:*/tdc_slicecounts_stop*);			
 TIMESPEC TS_MoreSlicesToCome = FROM "MoreSlicesToCome" 30 ns;
 
-TIMEGRP "DataToOld" = ffs(tdc_this_clockcounter*:tdc_first_clockcounter*);			
+TIMEGRP "DataToOld" = ffs(*/tdc_this_clockcounter*:*/tdc_first_clockcounter*);			
 TIMESPEC TS_DataToOld = FROM "DataToOld" 35 ns;
 
 
 #sorting is pure combinatorial
-PIN BRAMTDC.q* TPTHRU = tdc_out;
+PIN */BRAMTDC.q* TPTHRU = tdc_out;
 TIMESPEC TS_READOUT_TDC = FROM RAMS THRU tdc_out TO FFS 30ns; 
