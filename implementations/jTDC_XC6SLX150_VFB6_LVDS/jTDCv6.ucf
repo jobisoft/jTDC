@@ -1,0 +1,48 @@
+##-----------------------------------------------------------------
+##--                                                             --
+##-- Company:  University of Bonn                                --
+##-- Engineer: John Bieling                                      --
+##--                                                             --
+##-----------------------------------------------------------------
+##--                                                             --
+##-- Copyright (C) 2015 John Bieling                             --
+##--                                                             --
+##-- This source file may be used and distributed without        --
+##-- restriction provided that this copyright statement is not   --
+##-- removed from the file and that any derivative work contains --
+##-- the original copyright notice and the associated disclaimer.--
+##--                                                             --
+##--     THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY     --
+##-- EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED   --
+##-- TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS   --
+##-- FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL THE AUTHOR      --
+##-- OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,         --
+##-- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES    --
+##-- (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE   --
+##-- GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR        --
+##-- BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF  --
+##-- LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT  --
+##-- (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT  --
+##-- OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         --
+##-- POSSIBILITY OF SUCH DAMAGE.                                 --
+##--                                                             --
+##-----------------------------------------------------------------
+
+TIMESPEC TS_CARRY_INPUTS = FROM PADS TO FFS ("*sample*") 30ns DATAPATHONLY;
+
+NET "*dutyline*" TPTHRU = duty;
+TIMESPEC TS_DUTY = THRU duty TO FFS 50 ns DATAPATHONLY;
+
+NET "NIM_OUT[*]" TNM = PADS nim_outputs;
+TIMESPEC TS_NIM_OUTPUTS = FROM FFS TO nim_outputs 30ns;
+
+NET config_register_A[*] TPTHRU = config_A_regs;
+NET config_register_B[*] TPTHRU = config_B_regs;
+NET enable_register[*] TPTHRU = enable_regs;
+TIMESPEC TS_CONFIG_A = FROM FFS THRU config_A_regs 30ns;
+TIMESPEC TS_CONFIG_B = FROM FFS THRU config_B_regs 30ns;
+TIMESPEC TS_ENABLE = FROM FFS THRU enable_regs 30ns;
+
+#crossclock to give more time for the scaler addr mux
+TIMEGRP "CROSSCLK" = ffs("*latched_data*");
+TIMESPEC TS_CROSSCLK = FROM "CROSSCLK" 50 ns DATAPATHONLY;
