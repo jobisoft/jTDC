@@ -216,9 +216,9 @@ module jTDCv6 (
 		.CLK(CLKBUS),
 		.registerbits(config_register_B)); 
 	
-	wire [8:0] busyshift = config_register_B[8:0];					
+	wire [8:0] busyshift = config_register_B[8:0];
 	wire stop_counting_on_busy = config_register_B[9];
-	wire [4:0] busyextend = config_register_B[15:11];		
+	wire [4:0] busyextend = config_register_B[15:11];
 	wire [3:0] hightime = config_register_B[19:16];
 	wire [3:0] deadtime = config_register_B[23:20];
 	wire [2:0] trigger_group_0 = config_register_B[26:24];
@@ -250,7 +250,7 @@ module jTDCv6 (
 		.writesignal(writesignal),
 		.readsignal(readsignal),
 		.CLK(CLKBUS),
-		.info({iCH,iBIT,iM,iFW}),	
+		.info({iCH,iBIT,iM,iFW}),
 		.registerbits(trigger_register_wire)); 
 
 	//cross clock domain
@@ -281,14 +281,14 @@ module jTDCv6 (
 	//-- toggle bit 1: vme_counter_reset
 	wire vme_counter_reset;
  	datapipe #(.data_width(1),.pipe_steps(2)) counter_reset_pipe ( 
-		.data(trigger_register[1]), 				
+		.data(trigger_register[1]),
 		.piped_data(vme_counter_reset),
 		.CLK(CLK200));  
 
 	//-- toggle bit 2: vme_counter_latch
 	wire vme_counter_latch;
 	datapipe #(.data_width(1),.pipe_steps(1)) counter_latch_pipe ( 
-		.data(trigger_register[2]), 				
+		.data(trigger_register[2]),
 		.piped_data(vme_counter_latch),
 		.CLK(CLK200));
 
@@ -345,13 +345,13 @@ module jTDCv6 (
 
 
 	//-----------------------------------------------------------------------------
-	//-- Busy & Latch ------------------------------------------------------
+	//-- Busy & Latch -------------------------------------------------------------
 	//-----------------------------------------------------------------------------
 
-	wire raw_busy;	
+	wire raw_busy;
 	wire latch;
-	reg busy;		
-	reg counter_latch;	
+	reg busy;
+	reg counter_latch;
 	reg counter_reset;
 
 	//the leading edge of the "busy & latch" signal is the actual latch, which is used only to latch the input scaler
@@ -418,7 +418,7 @@ module jTDCv6 (
 
 			wire scaler;
 			encode_96bit_pattern #(.encodedbits(encodedbits)) ENCODE (
-				.edgechoice(1'b1), //historical leftover
+				.edgechoice(1'b1), //sending the signal inverted into the chain gives better results
 				.d(sample),
 				.enable(tdc_enable[i]),
 				.CLK400(CLK400),
@@ -511,8 +511,8 @@ module jTDCv6 (
 		if (trigger_group_1[1] == 1'b1) trigger_choice_1[1] <= trigger_out_B; else  trigger_choice_1[1] <= 1'b0;
 		if (trigger_group_1[2] == 1'b1) trigger_choice_1[2] <= trigger_out_C; else  trigger_choice_1[2] <= 1'b0;
 
-		trigger_out[0] <= |trigger_choice_0;							
-		trigger_out[1] <= |trigger_choice_1;							
+		trigger_out[0] <= |trigger_choice_0;
+		trigger_out[1] <= |trigger_choice_1;
 
 	end
 
@@ -668,7 +668,7 @@ module jTDCv6 (
 				.readsignal(readsignal),
 				.readtrigger(scaler_readout_addr_reset),
 				.CLK(CLKBUS),
-				.registerbits(clklatch)); 	
+				.registerbits(clklatch));
 			
 			//increment scaler_readout_addr on the negedge of next (=read) 
 			//to keep the muxed value stable during read

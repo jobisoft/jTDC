@@ -309,7 +309,7 @@
     <property xil_pn:name="LUT Combining Xst" xil_pn:value="No" xil_pn:valueState="non-default"/>
     <property xil_pn:name="Language" xil_pn:value="VHDL" xil_pn:valueState="default"/>
     <property xil_pn:name="Last Applied Goal" xil_pn:value="Timing Performance" xil_pn:valueState="non-default"/>
-    <property xil_pn:name="Last Applied Strategy" xil_pn:value="SmartXplorer - mapextraeffort2ct45;./mapextraeffort2ct45.xds" xil_pn:valueState="non-default"/>
+    <property xil_pn:name="Last Applied Strategy" xil_pn:value="SmartXplorer - mapextraeffort2ct45;mapextraeffort2ct45.xds" xil_pn:valueState="non-default"/>
     <property xil_pn:name="Last Selected UCF File" xil_pn:value="jTDCv6.ucf" xil_pn:valueState="non-default"/>
     <property xil_pn:name="Last Unlock Status" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Launch SDK after Export" xil_pn:value="true" xil_pn:valueState="default"/>
@@ -473,7 +473,7 @@
     <property xil_pn:name="Use Synchronous Reset" xil_pn:value="No" xil_pn:valueState="non-default"/>
     <property xil_pn:name="Use Synchronous Set" xil_pn:value="No" xil_pn:valueState="non-default"/>
     <property xil_pn:name="Use Synthesis Constraints File" xil_pn:value="false" xil_pn:valueState="non-default"/>
-    <property xil_pn:name="User Browsed Strategy Files" xil_pn:value="./mapextraeffort2ct45.xds" xil_pn:valueState="non-default"/>
+    <property xil_pn:name="User Browsed Strategy Files" xil_pn:value="mapextraeffort2ct45.xds" xil_pn:valueState="non-default"/>
     <property xil_pn:name="UserID Code (8 Digit Hexadecimal)" xil_pn:value="0xFFFFFFFF" xil_pn:valueState="default"/>
     <property xil_pn:name="VCCAUX Voltage Level spartan6" xil_pn:value="2.5V" xil_pn:valueState="default"/>
     <property xil_pn:name="VHDL Source Analysis Standard" xil_pn:value="VHDL-200X" xil_pn:valueState="non-default"/>
