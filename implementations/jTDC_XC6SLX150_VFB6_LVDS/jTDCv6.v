@@ -11,32 +11,30 @@
 
 module jTDCv6 (
 
-				inout wire [31:0] D_INT,
-				input wire [15:0] A_INT,
-				input wire WRITE_INT,
-				input wire READ_INT,
-				output wire DTACK_INT,
+	inout wire [31:0] D_INT,
+	input wire [15:0] A_INT,
+	input wire WRITE_INT,
+	input wire READ_INT,
+	output wire DTACK_INT,
 
-				input wire CLK,
+	input wire CLK,
 
-				inout wire SCL_General,
-				inout wire SDA_General,
+	inout wire SCL_General,
+	inout wire SDA_General,
 
-				output wire [7:0] USER_LED,
-				input wire [7:0] Pushbutton,
-				input wire [1:0] Differential_IN,
-				inout wire [73:0] FPGA_SPARE,
-				input wire [3:0] NIM_IN,
-				output wire [3:0] NIM_OUT,
-				
-				inout wire [73:0] MEZ_A,
-				inout wire [73:0] MEZ_B,
-				inout wire [73:0] MEZ_C,
-				input wire [5:0] ID_A,
-				input wire [5:0] ID_B,
-				input wire [5:0] ID_C
-				
-				);
+	output wire [7:0] USER_LED,
+	input wire [7:0] Pushbutton,
+	input wire [1:0] Differential_IN,
+	inout wire [73:0] FPGA_SPARE,
+	input wire [3:0] NIM_IN,
+	output wire [3:0] NIM_OUT,
+	
+	inout wire [73:0] MEZ_A,
+	inout wire [73:0] MEZ_B,
+	inout wire [73:0] MEZ_C,
+	input wire [5:0] ID_A,
+	input wire [5:0] ID_B,
+	input wire [5:0] ID_C);
 
 
 
@@ -53,14 +51,14 @@ module jTDCv6 (
 
 	parameter fw = 8'h22;
 
-	parameter resolution = 2; 	 		//readout every second carry step			
-	parameter bits = 96;       		//empirical value for resolution=2 on VFB6
-	parameter encodedbits = 9;  		//includes hit bit 			
+	parameter resolution = 2;       //readout every second carry step
+	parameter bits = 96;            //empirical value for resolution=2 on VFB6
+	parameter encodedbits = 9;      //includes hit bit
 
-	parameter fifocounts = 15;	 		//max event size: (fifocounts+1)*1024-150;	
+	parameter fifocounts = 15;      //max event size: (fifocounts+1)*1024-150;
 
-	parameter tdc_channels = 98;		//number of tdc channels (max 100, see mapping below)
-	parameter scaler_channels = 98;	//number of scaler channels
+	parameter tdc_channels = 98;    //number of tdc channels (max 100, see mapping below)
+	parameter scaler_channels = 98; //number of scaler channels
 
 	genvar i;
 
@@ -77,13 +75,13 @@ module jTDCv6 (
 	//-- IO cards Setup for VFB6 board --------------------------------------------
 	//-----------------------------------------------------------------------------
 
-   wire [31:0] LVDS_A_IN; 
-   wire [31:0] LVDS_B_IN;
-   wire [31:0] LVDS_C_IN;
+	wire [31:0] LVDS_A_IN; 
+	wire [31:0] LVDS_B_IN;
+	wire [31:0] LVDS_C_IN;
 
-   mez_lvds_in lvds_a_in (.MEZ(MEZ_A[73:0]),.data(LVDS_A_IN));
-   mez_lvds_in lvds_b_in (.MEZ(MEZ_B[73:0]),.data(LVDS_B_IN));
-   mez_lvds_in lvds_c_in (.MEZ(MEZ_C[73:0]),.data(LVDS_C_IN));
+	mez_lvds_in lvds_a_in (.MEZ(MEZ_A[73:0]),.data(LVDS_A_IN));
+	mez_lvds_in lvds_b_in (.MEZ(MEZ_B[73:0]),.data(LVDS_B_IN));
+	mez_lvds_in lvds_c_in (.MEZ(MEZ_C[73:0]),.data(LVDS_C_IN));
 
 
 
@@ -101,10 +99,10 @@ module jTDCv6 (
 	wire CLK200;
 	wire CLK400;
 	pll_vfb6_400 PLL_TDC (
-		 .CLKIN(CLK), 
-		 .CLK1(CLKBUS), 
-		 .CLK2(CLK200),
-		 .CLK4(CLK400));
+		.CLKIN(CLK), 
+		.CLK1(CLKBUS), 
+		.CLK2(CLK200),
+		.CLK4(CLK400));
 
 
 
@@ -125,12 +123,12 @@ module jTDCv6 (
 	wire readsignal;
 	wire writesignal;
 
-	assign statusregister [7:0]   = 8'b00000001;      	//-- Firmware version
-	assign statusregister [13:8]  = 6'b000001;			//-- Firmware type
+	assign statusregister [7:0]   = 8'b00000001;      //-- Firmware version
+	assign statusregister [13:8]  = 6'b000001;        //-- Firmware type
 	//-- For REV B boards
-	assign statusregister [19:14] = ID_A;             	//-- Board type Mezzanine_A
-	assign statusregister [25:20] = ID_B;             	//-- Board type Mezzanine_B
-	assign statusregister [31:26] = ID_C;             	//-- Board type Mezzanine_C
+	assign statusregister [19:14] = ID_A;             //-- Board type Mezzanine_A
+	assign statusregister [25:20] = ID_B;             //-- Board type Mezzanine_B
+	assign statusregister [31:26] = ID_C;             //-- Board type Mezzanine_C
 
 	bus_interface_vfb6 BUS_INT (
 		.board_databus(D_INT),
@@ -160,13 +158,13 @@ module jTDCv6 (
 	//-----------------------------------------------------------------------------
 
 	i2c_interface I2C_INT (
-					.databus(databus),
-					.addressbus(addressbus),
-					.CLK(CLKBUS),
-					.writesignal(writesignal),
-					.readsignal(readsignal),
-					.SCL_General(SCL_General),
-					.SDA_General(SDA_General));
+		.databus(databus),
+		.addressbus(addressbus),
+		.CLK(CLKBUS),
+		.writesignal(writesignal),
+		.readsignal(readsignal),
+		.SCL_General(SCL_General),
+		.SDA_General(SDA_General));
 
 
 
@@ -188,11 +186,11 @@ module jTDCv6 (
 		.readsignal(readsignal),
 		.writesignal(writesignal),
 		.CLK(CLKBUS),
-		.registerbits(config_register_A)); 	 
+		.registerbits(config_register_A));
 
 	wire [4:0] geoid = config_register_A[4:0];
 	wire dutycycle = config_register_A[5];
-   wire edgechoice = config_register_A[6];
+	wire edgechoice = config_register_A[6];
 	wire tdc_trigger_select = config_register_A[7];
 	wire [23:0] clock_limit = config_register_A[31:8];
 
@@ -243,7 +241,7 @@ module jTDCv6 (
 
 	wire [7:0] iFW = fw;
 	wire [7:0] iCH = tdc_channels;
-	wire [7:0] iBIT = encodedbits-1;			//the hit-bit is not pushed into the fifo
+	wire [7:0] iBIT = encodedbits-1;           //the hit-bit is not pushed into the fifo
 	wire [7:0] iM = 8'h34;
 	wire [31:0] trigger_register_wire;
 	toggle_register #(.myaddress(16'h0024)) VME_TRIGGER_REGISTER (
@@ -256,13 +254,13 @@ module jTDCv6 (
 		.registerbits(trigger_register_wire)); 
 
 	//cross clock domain
-   reg [31:0] trigger_register;
+	reg [31:0] trigger_register;
 	always@(posedge CLK200) 
 	begin
 		trigger_register <= trigger_register_wire;
-	end			
+	end
 
-   //-- toggle bit 0: tdc_reset, make tdc_reset multiple cycles long
+	//-- toggle bit 0: tdc_reset, make tdc_reset multiple cycles long
 	wire tdc_reset_start = trigger_register[0];
 	reg [3:0] tdc_reset_counter = 4'b0000;
 	reg tdc_reset;
@@ -280,26 +278,26 @@ module jTDCv6 (
 		end
 	end
    
-   //-- toggle bit 1: vme_counter_reset
+	//-- toggle bit 1: vme_counter_reset
 	wire vme_counter_reset;
  	datapipe #(.data_width(1),.pipe_steps(2)) counter_reset_pipe ( 
-					.data(trigger_register[1]), 				
-					.piped_data(vme_counter_reset),
-					.CLK(CLK200));  
+		.data(trigger_register[1]), 				
+		.piped_data(vme_counter_reset),
+		.CLK(CLK200));  
 
-   //-- toggle bit 2: vme_counter_latch
+	//-- toggle bit 2: vme_counter_latch
 	wire vme_counter_latch;
 	datapipe #(.data_width(1),.pipe_steps(1)) counter_latch_pipe ( 
-					.data(trigger_register[2]), 				
-					.piped_data(vme_counter_latch),
-					.CLK(CLK200));
+		.data(trigger_register[2]), 				
+		.piped_data(vme_counter_latch),
+		.CLK(CLK200));
 
 	//-- toggle bit 3: output_reset
 	wire output_reset = trigger_register[3];
 
 	//-- toggle bit 6: generate fake data input for busyshift measurement
 	wire fake_data;
-   signal_clipper fake_data_clip ( .sig(trigger_register[6]), .CLK(CLK200), .clipped_sig(fake_data));
+	signal_clipper fake_data_clip ( .sig(trigger_register[6]), .CLK(CLK200), .clipped_sig(fake_data));
 
 
 
@@ -382,7 +380,7 @@ module jTDCv6 (
 	wire [99:0] tdc_enable;
 	wire [99:0] tdc_channel;
 	
-	assign tdc_channel[0] = NIM_IN[0];						
+	assign tdc_channel[0] = NIM_IN[0];
 	assign tdc_enable[0] = 1'b1;
 
 	assign tdc_enable[96:1] = enable_register[95:0];
@@ -390,10 +388,9 @@ module jTDCv6 (
 	assign tdc_channel[64:33] = (edgechoice == 1'b0) ? LVDS_B_IN[31:0] : ~LVDS_B_IN[31:0];
 	assign tdc_channel[96:65] = (edgechoice == 1'b0) ? LVDS_C_IN[31:0] : ~LVDS_C_IN[31:0];
 
-	assign tdc_channel[97] = NIM_IN[2];						
+	assign tdc_channel[97] = NIM_IN[2];
 	assign tdc_enable[97] = 1'b1;
 
-	
 
 
 
@@ -420,14 +417,14 @@ module jTDCv6 (
 				.CLK(CLK400));
 
 			wire scaler;
-				encode_96bit_pattern #(.encodedbits(encodedbits)) ENCODE (
-					.edgechoice(1'b1), //historical leftover
-					.d(sample),
-					.enable(tdc_enable[i]),
-					.CLK400(CLK400),
-					.CLK200(CLK200),
-					.code(tdc_data_codes[(i+1)*encodedbits-1:i*encodedbits]),
-					.tdc_hit(tdc_hits[i]),
+			encode_96bit_pattern #(.encodedbits(encodedbits)) ENCODE (
+				.edgechoice(1'b1), //historical leftover
+				.d(sample),
+				.enable(tdc_enable[i]),
+				.CLK400(CLK400),
+				.CLK200(CLK200),
+				.code(tdc_data_codes[(i+1)*encodedbits-1:i*encodedbits]),
+				.tdc_hit(tdc_hits[i]),
 				.scaler_hit(scaler));
 
 			//fake scaler hit for busyshift determination
@@ -440,7 +437,7 @@ module jTDCv6 (
 					end else begin
 						scaler_buffer <= scaler;
 					end
-			end
+				end
 			end else begin
 				always@(posedge CLK200)
 				begin
@@ -450,7 +447,6 @@ module jTDCv6 (
 			assign scaler_hits[i] = scaler_buffer;
 
 		end
-
 	endgenerate
 
 	//unused channels
@@ -476,11 +472,9 @@ module jTDCv6 (
 	assign trigger_hits[95:0] = tdc_hits[96:1];
 
 	generate
-
 		for (i=0; i < 24; i=i+1) begin : TRIGGER_ORHITS
 			assign trigger_first_or[i] = |trigger_hits[i*4+3:i*4]; 
 		end
-
 	endgenerate
 
 	reg [23:0] trigger_out_0;
@@ -495,30 +489,30 @@ module jTDCv6 (
 	always@(posedge CLK200)
 	begin
 
-			// generate trigger output signal
-			trigger_out_0 <= trigger_first_or;
-			
-			trigger_out_1[0] <= |trigger_out_0[ 3: 0]; //A
-			trigger_out_1[1] <= |trigger_out_0[ 7: 4]; //A
-			trigger_out_1[2] <= |trigger_out_0[11: 8]; //B
-			trigger_out_1[3] <= |trigger_out_0[15:12]; //B
-			trigger_out_1[4] <= |trigger_out_0[19:16]; //C
-			trigger_out_1[5] <= |trigger_out_0[23:20]; //C
-				
-			trigger_out_A <= |trigger_out_1[1:0];
-			trigger_out_B <= |trigger_out_1[3:2];
-			trigger_out_C <= |trigger_out_1[5:4];
+		// generate trigger output signal
+		trigger_out_0 <= trigger_first_or;
+	
+		trigger_out_1[0] <= |trigger_out_0[ 3: 0]; //A
+		trigger_out_1[1] <= |trigger_out_0[ 7: 4]; //A
+		trigger_out_1[2] <= |trigger_out_0[11: 8]; //B
+		trigger_out_1[3] <= |trigger_out_0[15:12]; //B
+		trigger_out_1[4] <= |trigger_out_0[19:16]; //C
+		trigger_out_1[5] <= |trigger_out_0[23:20]; //C
+		
+		trigger_out_A <= |trigger_out_1[1:0];
+		trigger_out_B <= |trigger_out_1[3:2];
+		trigger_out_C <= |trigger_out_1[5:4];
 
-			if (trigger_group_0[0] == 1'b1) trigger_choice_0[0] <= trigger_out_A; else  trigger_choice_0[0] <= 1'b0;
-			if (trigger_group_0[1] == 1'b1) trigger_choice_0[1] <= trigger_out_B; else  trigger_choice_0[1] <= 1'b0;
-			if (trigger_group_0[2] == 1'b1) trigger_choice_0[2] <= trigger_out_C; else  trigger_choice_0[2] <= 1'b0;
+		if (trigger_group_0[0] == 1'b1) trigger_choice_0[0] <= trigger_out_A; else  trigger_choice_0[0] <= 1'b0;
+		if (trigger_group_0[1] == 1'b1) trigger_choice_0[1] <= trigger_out_B; else  trigger_choice_0[1] <= 1'b0;
+		if (trigger_group_0[2] == 1'b1) trigger_choice_0[2] <= trigger_out_C; else  trigger_choice_0[2] <= 1'b0;
 
-			if (trigger_group_1[0] == 1'b1) trigger_choice_1[0] <= trigger_out_A; else  trigger_choice_1[0] <= 1'b0;
-			if (trigger_group_1[1] == 1'b1) trigger_choice_1[1] <= trigger_out_B; else  trigger_choice_1[1] <= 1'b0;
-			if (trigger_group_1[2] == 1'b1) trigger_choice_1[2] <= trigger_out_C; else  trigger_choice_1[2] <= 1'b0;
+		if (trigger_group_1[0] == 1'b1) trigger_choice_1[0] <= trigger_out_A; else  trigger_choice_1[0] <= 1'b0;
+		if (trigger_group_1[1] == 1'b1) trigger_choice_1[1] <= trigger_out_B; else  trigger_choice_1[1] <= 1'b0;
+		if (trigger_group_1[2] == 1'b1) trigger_choice_1[2] <= trigger_out_C; else  trigger_choice_1[2] <= 1'b0;
 
-			trigger_out[0] <= |trigger_choice_0;							
-			trigger_out[1] <= |trigger_choice_1;							
+		trigger_out[0] <= |trigger_choice_0;							
+		trigger_out[1] <= |trigger_choice_1;							
 
 	end
 
@@ -541,35 +535,35 @@ module jTDCv6 (
 	wire [31:0] event_fifo_value;
 
 	jTDC_core #(.tdc_channels(tdc_channels), .encodedbits(encodedbits), .fifocounts(fifocounts)) jTDC (
-      .tdc_hits(tdc_hits), 
-      .tdc_data_codes(tdc_data_codes), 
-      .tdc_trigger_select(tdc_trigger_select), 
-      .tdc_reset(tdc_reset), 
-      .clock_limit(clock_limit), 
-      .geoid(geoid), 
-      .iBIT(iBIT), 
-      .CLK200(CLK200),
-      .CLKBUS(CLKBUS), 
-      .event_fifo_readrequest(event_fifo_readrequest),
-      .data_fifo_readrequest(data_fifo_readrequest), 
-      .event_fifo_value(event_fifo_value), 
-      .data_fifo_value(data_fifo_value) );
+		.tdc_hits(tdc_hits), 
+		.tdc_data_codes(tdc_data_codes), 
+		.tdc_trigger_select(tdc_trigger_select), 
+		.tdc_reset(tdc_reset), 
+		.clock_limit(clock_limit), 
+		.geoid(geoid), 
+		.iBIT(iBIT), 
+		.CLK200(CLK200),
+		.CLKBUS(CLKBUS), 
+		.event_fifo_readrequest(event_fifo_readrequest),
+		.data_fifo_readrequest(data_fifo_readrequest), 
+		.event_fifo_value(event_fifo_value), 
+		.data_fifo_value(data_fifo_value) );
 
 	readonly_register_with_readtrigger #(.myaddress(16'h8888)) EVENT_FIFO_READOUT (
-		 .databus(databus), 
-		 .addressbus(addressbus), 
-		 .readsignal(readsignal), 
-		 .readtrigger(event_fifo_readrequest), 
-		 .CLK(CLKBUS), 
-		 .registerbits(event_fifo_value));
+		.databus(databus), 
+		.addressbus(addressbus), 
+		.readsignal(readsignal), 
+		.readtrigger(event_fifo_readrequest), 
+		.CLK(CLKBUS), 
+		.registerbits(event_fifo_value));
 
 	readonly_register_with_readtrigger #(.myaddress(16'h4444)) DATA_FIFO_READOUT (
-		 .databus(databus), 
-		 .addressbus(addressbus), 
-		 .readsignal(readsignal), 
-		 .readtrigger(data_fifo_readrequest), 
-		 .CLK(CLKBUS), 
-		 .registerbits(data_fifo_value)); 	 
+		.databus(databus), 
+		.addressbus(addressbus), 
+		.readsignal(readsignal), 
+		.readtrigger(data_fifo_readrequest), 
+		.CLK(CLKBUS), 
+		.registerbits(data_fifo_value));
 
 
 
@@ -631,10 +625,10 @@ module jTDCv6 (
 
 					wire [31:0] input_counts;
 					dsp_multioption_counter #(.clip_count(0)) INPUT_COUNTER (
-					 .countClock(CLK200), 
-					 .count(busycount),
-					 .reset(counter_reset),
-					 .countout(input_counts));
+						.countClock(CLK200), 
+						.count(busycount),
+						.reset(counter_reset),
+						.countout(input_counts));
 
 					wire [31:0] input_latched_counts;
 					datalatch #(.latch_pipe_steps(1)) INPUT_COUNTER_DATALATCH  (
@@ -655,10 +649,10 @@ module jTDCv6 (
 			//referenz clock counter (to be able to calculate rates)
 			wire [31:0] pureclkcounts;
 			dsp_multioption_counter #(.clip_count(0)) PURE_CLOCK_COUNTER (
-				 .countClock(CLK200), 
-				 .count(!busy), 
-				 .reset(counter_reset),  
-				 .countout(pureclkcounts));
+				.countClock(CLK200), 
+				.count(!busy), 
+				.reset(counter_reset),  
+				.countout(pureclkcounts));
 
 			wire [31:0] clklatch;
 			datalatch #(.latch_pipe_steps(1)) CLOCK_COUNTER_DATALATCH  (
@@ -679,10 +673,10 @@ module jTDCv6 (
 			//increment scaler_readout_addr on the negedge of next (=read) 
 			//to keep the muxed value stable during read
 			dsp_multioption_counter #(.clip_count(1),.clip_reset(1)) SCALER_READOUT_ADDR_INC (
-				 .countClock(CLKBUS), 
-				 .count(~scaler_readout_addr_next), 
-				 .reset(scaler_readout_addr_reset),  
-				 .countout(scaler_readout_pipe_addr));
+				.countClock(CLKBUS), 
+				.count(~scaler_readout_addr_next), 
+				.reset(scaler_readout_addr_reset),  
+				.countout(scaler_readout_pipe_addr));
 
 			reg [31:0] muxed_counts_pipe;
 			always@(posedge CLKBUS) begin
@@ -697,7 +691,7 @@ module jTDCv6 (
 				.readsignal(readsignal),
 				.readtrigger(scaler_readout_addr_next),
 				.CLK(CLKBUS),
-				.registerbits(muxed_counts_pipe)); 	 
+				.registerbits(muxed_counts_pipe));
 
 		end
 	endgenerate
@@ -733,9 +727,9 @@ module jTDCv6 (
 		.reset(output_reset));	
 
 	assign NIM_OUT[0] = 0;
-	assign NIM_OUT[1] = trigger_output[0];	//trigger out A
+	assign NIM_OUT[1] = trigger_output[0];   //trigger out A
 	assign NIM_OUT[2] = 0;   
-	assign NIM_OUT[3] = trigger_output[1]; //trigger out B
+	assign NIM_OUT[3] = trigger_output[1];   //trigger out B
 
 	assign FPGA_SPARE = 0;
 	assign USER_LED = 0;
