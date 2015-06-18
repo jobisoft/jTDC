@@ -1,0 +1,15 @@
+TIMESPEC TS_CARRY_INPUTS = FROM PADS TO FFS ("*sample*") 30ns DATAPATHONLY;
+
+NET "*dutyline*" TPTHRU = duty;
+TIMESPEC TS_DUTY = THRU duty TO FFS 50 ns DATAPATHONLY;
+
+NET "NIM_OUT[*]" TNM = PADS nim_outputs;
+TIMESPEC TS_NIM_OUTPUTS = FROM FFS TO nim_outputs 30ns;
+
+NET config_register_A[*] TIG;
+NET config_register_B[*] TIG;
+NET enable_register[*] TIG;
+
+#crossclock to give more time for the scaler addr mux
+TIMEGRP "CROSSCLK" = ffs("*latched_data*");
+TIMESPEC TS_CROSSCLK = FROM "CROSSCLK" 50 ns DATAPATHONLY;
