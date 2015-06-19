@@ -1,5 +1,4 @@
 #jTDC
-====
 
 The jTDC is a high resolution [FPGA](https://en.wikipedia.org/wiki/Field-programmable_gate_array) based [TDC](https://en.wikipedia.org/wiki/Time-to-digital_converter) with an RMS resolution of less than 30ps. It has been developed for the Xilinx Spartan6, but can also run on the Xilinx Virtex5 or better. It provides up to 99 TDC channels with an input counter (SCALER) for each data input (overflow after 32bit).
 
