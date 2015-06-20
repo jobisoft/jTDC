@@ -15,3 +15,7 @@ The example implementation projects were created using Xilinx ISE Design Suite 1
 ##Acknowledgements
 
 The author wants to thank Prof. Klein (Physics Institute of the University of Bonn) for his support in making this work available to the public. Furthermore, the author wants to thank his fellow colleagues Dr. Jürgen Hannappel, Oliver Freyermuth and Daniel Hammann for their important feedback during the developing process. The jTDC would not have been possible without the numerous coffee breaks, where many ideas and concepts have been born. Last but not least, the author wants to thank Georg Scheluchin for performing most of the tests involving the discriminator mezzanine.
+
+##License, Documentation & Support
+
+The jTDC is provided 'as is', you may use and modify it according to the GNU General Public License ([GNU GPLv3] (http://www.gnu.org/licenses/gpl-3.0.en.html)). Documentation is provided through the [jTDC wiki](https://github.com/jobisoft/jTDC/wiki). If you need further assistence, you may contact the author for additional support.
