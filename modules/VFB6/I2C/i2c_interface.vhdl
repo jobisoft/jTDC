@@ -2,11 +2,11 @@
 ----                                                                 ----
 ---- Engineer: A. Winnebeck                                          ----
 ---- Company:  ELB-Elektroniklaboratorien Bonn UG                    ----
-----           (haftungsbeschr‰nkt)
+----           (haftungsbeschr√§nkt)
 ----                                                                 ----
 -------------------------------------------------------------------------
 ----                                                                 ----
----- Copyright (C) 2015 Daniel Hahne                                 ----
+---- Copyright (C) 2015 ELB                                          ----
 ----                                                                 ----
 ---- This program is free software; you can redistribute it and/or   ----
 ---- modify it under the terms of the GNU General Public License as  ----
