@@ -1,0 +1,39 @@
+language: cpp
+
+sudo: false
+
+compiler:
+  - clang
+  - gcc
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - libusb-1.0-0-dev
+      - g++-5
+
+install:
+  # g++ 5 on linux
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-5"; fi
+
+before_script:
+  - mkdir -p ${TRAVIS_BUILD_DIR}/build
+  - mkdir -p ${TRAVIS_BUILD_DIR}/install
+  - cd ${TRAVIS_BUILD_DIR}/build
+  - cmake -DCMAKE_INSTALL_PREFIX:PATH=${TRAVIS_BUILD_DIR}/install ../src/
+
+cache:
+  directories:
+    - $HOME/.ccache
+
+env:
+  - PATH=/usr/lib/ccache:${PATH}:${TRAVIS_BUILD_DIR}/install/bin LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${TRAVIS_BUILD_DIR}/install/lib
+
+script:
+  - env
+  - make
+  - make install
+  - cd ${TRAVIS_BUILD_DIR}/install
+  - jDAQLite

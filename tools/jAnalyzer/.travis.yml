@@ -1,0 +1,84 @@
+language: cpp
+
+sudo: false
+
+compiler:
+  - clang
+  - gcc
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-5
+      - x11-common
+      - libx11-6
+      - x11-utils
+      - libX11-dev
+      - libgsl0-dev
+      - gsl-bin
+      - libxpm-dev
+      - libxft-dev
+      - gfortran
+      - build-essential
+      - libjpeg-turbo8-dev
+      - libjpeg8-dev
+      - libjpeg-dev
+      - libtiff4-dev
+      - libxml2-dev
+      - libssl-dev
+      - libgnutls-dev
+      - libgmp3-dev
+      - libpng12-dev
+      - libldap2-dev
+      - libkrb5-dev
+      - freeglut3-dev
+      - libfftw3-dev
+      - python-dev
+      - libmysqlclient-dev
+      - libgif-dev
+      - libiodbc2
+      - libiodbc2-dev
+      - subversion
+      - libxext-dev
+      - libxmu-dev
+      - libimlib2
+      - gccxml
+
+cache:
+  directories:
+    - $HOME/.ccache
+
+env:
+  - ROOT_VERSION=5.34.34 PATH=/usr/lib/ccache:${PATH}:${TRAVIS_BUILD_DIR}/install/bin LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${TRAVIS_BUILD_DIR}/install/lib
+
+install:
+  # g++-5 on linux
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-5"; fi
+
+  # install ROOT. Not in Ubuntu 12.04, only later again... Travis still uses stone-aged 12.04. 
+  - mkdir root
+  - cd root
+  - wget http://root.cern.ch/download/root_v${ROOT_VERSION}.source.tar.gz
+  - tar xf root_v${ROOT_VERSION}.source.tar.gz
+  - cd root
+  - mkdir -p ${TRAVIS_BUILD_DIR}/install/
+  - ./configure linuxx8664gcc --enable-explicitlink --minimal --prefix=${TRAVIS_BUILD_DIR}/install/root --etcdir=${TRAVIS_BUILD_DIR}/install/root/etc/root
+  - make
+  - make install
+  - source ${TRAVIS_BUILD_DIR}/install/root/bin/thisroot.sh
+
+before_script:
+  - mkdir -p ${TRAVIS_BUILD_DIR}/build
+  - mkdir -p ${TRAVIS_BUILD_DIR}/install
+  - cd ${TRAVIS_BUILD_DIR}/build
+  - cmake -DCMAKE_INSTALL_PREFIX:PATH=${TRAVIS_BUILD_DIR}/install ../src/
+
+script:
+  - env
+  - make
+  - make install
+  - cd ${TRAVIS_BUILD_DIR}/install
+  - jAnalyzer
+  - jAnalyzer ${TRAVIS_BUILD_DIR}/examples/run*.dat -r 1 -u
