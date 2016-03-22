@@ -1,0 +1,6 @@
+[submodule "tools/jAnalyzer"]
+	path = tools/jAnalyzer
+	url = https://github.com/jobisoft/jAnalyzer.git
+[submodule "tools/jDaqLite"]
+	path = tools/jDaqLite
+	url = https://github.com/jobisoft/jDaqLite.git
